@@ -1,12 +1,15 @@
+import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <div>
-      <h1>Job Application Copilot</h1>
-      <Dashboard />
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <main className="p-6">
+        <Dashboard />
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
