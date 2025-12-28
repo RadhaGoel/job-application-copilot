@@ -4,15 +4,27 @@ const Dashboard = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [resume, setResume] = useState(null);
 
-  const handleAnalyze = () => {
-    if (!jobDescription || !resume) {
-      alert("Please add job description and resume");
-      return;
-    }
+  const handleAnalyze = async () => {
+  if (!jobDescription || !resume) {
+    alert("Please add job description and resume");
+    return;
+  }
 
-    console.log("Job Description:", jobDescription);
-    console.log("Resume File:", resume);
-  };
+  const formData = new FormData();
+  formData.append("jobDescription", jobDescription);
+  formData.append("resume", resume);
+
+  const res = await fetch("http://localhost:5000/analyze", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log(data);
+
+  alert("Backend connected successfully ✅");
+};
+
 
   return (
     <div className="p-10 max-w-5xl mx-auto">
