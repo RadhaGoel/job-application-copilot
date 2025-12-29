@@ -9,6 +9,7 @@ const Dashboard = () => {
 
 
   const handleAnalyze = async () => {
+    console.log("Analyze button clicked");
   if (!jobDescription || !resume) {
     alert("Please add job description and resume");
     return;
@@ -20,7 +21,7 @@ const Dashboard = () => {
 
   setLoading(true);
 
-  const res = await fetch("https://job-application-copilot-jqqn.onrender.com", {
+  const res = await fetch("https://job-application-copilot-jqqn.onrender.com/analyze", {
     method: "POST",
     body: formData,
   });
