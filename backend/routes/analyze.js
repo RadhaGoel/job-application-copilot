@@ -1,7 +1,9 @@
+import { getAISuggestions } from "../services/aiService.js";
 import express from "express";
 import multer from "multer";
 import fs from "fs";
 import { createRequire } from "module";
+
 const require = createRequire(import.meta.url);
 const pdfParse = require("pdf-parse");
 
@@ -18,22 +20,61 @@ router.post("/", upload.single("resume"), async (req, res) => {
 
     const resumeText = pdfData.text;
 
-    const jdWords = jobDescription.toLowerCase().split(/\W+/);
-const resumeWords = resumeText.toLowerCase().split(/\W+/);
+    let aiSuggestions = null;
 
-const commonWords = jdWords.filter(word =>
-  resumeWords.includes(word)
-);
+try {
+  aiSuggestions = await getAISuggestions(
+    resumeText.slice(0, 2000),
+    jobDescription
+  );
+} catch (err) {
+  console.error("AI failed:", err.message);
+}
 
-const matchScore = Math.min(
-  Math.round((commonWords.length / jdWords.length) * 100),
-  100
-);
+
+const stopWords = [
+  "the","and","a","to","of","in","for","with","on","at","by","an","is","are","we","you"
+];
+
+
+const jdWords = jobDescription
+  .toLowerCase()
+  .split(/\W+/)
+  .filter(word => word.length > 2 && !stopWords.includes(word));
+
+const resumeWords = resumeText
+  .toLowerCase()
+  .split(/\W+/)
+  .filter(word => word.length > 2 && !stopWords.includes(word));
+
+  const commonWords = [...new Set(
+  jdWords.filter(word => resumeWords.includes(word))
+)];
+
+
+const matchScore = jdWords.length
+  ? Math.min(Math.round((commonWords.length / jdWords.length) * 100), 100)
+  : 0;
+
+
+
+//     const jdWords = jobDescription.toLowerCase().split(/\W+/);
+// const resumeWords = resumeText.toLowerCase().split(/\W+/);
+
+// const commonWords = jdWords.filter(word =>
+//   resumeWords.includes(word)
+// );
+
+// const matchScore = Math.min(
+//   Math.round((commonWords.length / jdWords.length) * 100),
+//   100
+// );
 
 res.json({
   success: true,
   matchScore,
   matchedKeywords: [...new Set(commonWords)].slice(0, 20),
+  aiSuggestions
 });
 
   } catch (error) {
