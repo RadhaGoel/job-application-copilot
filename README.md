@@ -1,23 +1,36 @@
-# Job Application Copilot 
+# Job Copilot
 
-An AI-powered platform that helps users optimize resumes, generate personalized cover letters, and track job applications.
+Job Copilot is a web application that analyzes a resume against a job description and shows how well they match.
+
+## Features
+- Upload resume in PDF format
+- Paste a job description
+- Get a match score
+- View matched skills
+- Get resume improvement suggestions
+- See previous analysis history
 
 ## Tech Stack
-- React (Frontend)
-- Node.js & Express (Backend - upcoming)
-- MongoDB (Database - upcoming)
-- OpenAI / Azure AI (Planned)
+Frontend: React, Tailwind CSS  
+Backend: Node.js, Express  
 
-## Current Status
-- Frontend setup completed  
-- Backend & AI integration in progress
+## How It Works
+1. User uploads a resume
+2. User pastes a job description
+3. Backend extracts resume text
+4. Resume and job description are compared
+5. Results are shown on the dashboard
 
-## Planned Features
-- Resume optimizer with ATS scoring
-- AI-generated cover letters
-- Job application tracker
-- Recruiter email analyzer
+## Run Locally
+Backend:
+cd backend  
+npm install  
+node index.js  
 
----
+Frontend:
+cd frontend  
+npm install  
+npm run dev  
 
-> Built step-by-step as a real-world full-stack + AI project.
+## Author
+Radha Goel
